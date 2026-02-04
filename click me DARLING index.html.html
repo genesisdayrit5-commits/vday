@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be My Valentine? 💚</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #9cffc7, #e9fff3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #064e3b;
+      overflow: hidden;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 40px;
+      width: 90%;
+      max-width: 520px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      animation: fadeIn 1.2s ease;
+      position: relative;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 20px 0 30px;
+    }
+    .buttons {
+      position: relative;
+      height: 80px;
+    }
+    button {
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.15s ease;
+      position: absolute;
+    }
+    #yesBtn {
+      background: #34d399;
+      color: #064e3b;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #noBtn {
+      background: #bbf7d0;
+      color: #065f46;
+      right: 20px;
+    }
+    .message {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      display: none;
+      animation: fadeIn 0.8s ease;
+    }
+    .floating-hearts span {
+      position: absolute;
+      bottom: -50px;
+      font-size: 22px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.9;
+      color: #34d399;
+    }
+    #heartRain {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: none;
+      z-index: 1;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <img id="heartRain" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Red Heart Rain" />
+
+  <div class="card" id="card">
+    <h1 id="question">Colyn Cunanan, will you be my Valentine?</h1>
+    <p id="subtext">
+      This coming February 14,<br />
+      will you be my Valentine? 💚
+    </p>
+    <p id="plea" style="font-weight:bold; font-size:1.2rem; display:none;">pleaseee 🥺</p>
+
+    <div class="buttons" id="buttons">
+      <button id="yesBtn" onclick="sayYes()">Yes 💚</button>
+      <button id="noBtn" onclick="sayNo()">No 😭</button>
+    </div>
+
+    <div class="message" id="finalMessage">
+      Nicee one bebii 😌💚<br />
+      boss mag d date tayo sa purten<br />
+      SAUHSUHAIJDHNOAIHHVBSAHSHAHBSJDBA
+    </div>
+  </div>
+
+  <div class="floating-hearts" id="hearts"></div>
+
+  <script>
+    let noScale = 1;
+    let yesScale = 1;
+    let pleaIndex = 0;
+    const pleas = [
+      'pleaseee 🥺',
+      'pretty pleaseee 🥹',
+      'one more chance 😭',
+      'ayaw mo talaga? 🥲',
+      'sige na oh 💔'
+    ];
+
+    function sayNo() {
+      noScale -= 0.15;
+      yesScale += 0.25;
+
+      const noBtn = document.getElementById('noBtn');
+      const yesBtn = document.getElementById('yesBtn');
+      const plea = document.getElementById('plea');
+
+      plea.style.display = 'block';
+      plea.textContent = pleas[pleaIndex % pleas.length];
+      pleaIndex++;
+
+      yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
+
+      if (noScale <= 0.2) {
+        noBtn.style.display = 'none';
+      } else {
+        noBtn.style.transform = `scale(${noScale})`;
+      }
+    }
+
+    function sayYes() {
+      document.getElementById('buttons').style.display = 'none';
+      document.getElementById('question').textContent = 'AKALA NYA MAKAKATANGGI SYA WALA KANG NO CHOICE BOYYY HEHEHE 😈';
+      document.getElementById('subtext').style.display = 'none';
+      document.getElementById('plea').style.display = 'none';
+      document.getElementById('finalMessage').style.display = 'block';
+      document.getElementById('heartRain').style.display = 'block';
+    }
+
+    // YES button chases cursor
+    document.addEventListener('mousemove', (e) => {
+      const yesBtn = document.getElementById('yesBtn');
+      if (!yesBtn || yesBtn.style.display === 'none') return;
+
+      const rect = yesBtn.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+
+      yesBtn.style.transform = `translate(${dx * 0.05}px, ${dy * 0.05}px) scale(${yesScale})`;
+    });
+
+    // floating green hearts
+    const heartsContainer = document.getElementById('hearts');
+    const heartEmojis = ['❤️','💚','❤️','💚','💕','🍀'];
+
+    setInterval(() => {
+      const heart = document.createElement('span');
+      heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 8000);
+    }, 350);
+  </script>
+
+</body>
+</html>
