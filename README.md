@@ -1,2 +1,0 @@
-# vday
-for my cocobop
